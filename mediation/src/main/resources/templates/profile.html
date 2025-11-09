@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Profile - ResolveIt</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .profile-card {
+      max-width: 480px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    .profile-picture {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #333;
+      margin-bottom: 20px;
+      border-left: 5px solid #667eea;
+      padding-left: 12px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .info-label {
+      font-weight: 600;
+      color: #555;
+    }
+    .info-value {
+      font-weight: 500;
+      color: #222;
+      text-align: right;
+    }
+    .btn-action {
+      margin-top: 20px;
+      width: 100%;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="profile-card text-center">
+  <img src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+       alt="Profile Picture" class="profile-picture" />
+  <h2 th:text="${user.name}">User Name</h2>
+  <p class="text-muted mb-4" th:text="${user.email}">email@example.com</p>
+
+  <div class="section-title text-start">Personal Information</div>
+  <div class="info-row">
+    <div class="info-label">Full Name</div>
+    <div class="info-value" th:text="${user.name}">John Doe</div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">Email</div>
+    <div class="info-value" th:text="${user.email}">john@example.com</div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">Phone Number</div>
+    <div class="info-value" th:text="${user.phone_no}">+91 9876543210</div>
+  </div>
+
+  <div class="section-title text-start mt-4">Address Information</div>
+  <div class="info-row">
+    <div class="info-label">Address</div>
+    <div class="info-value" th:text="${user.address}">123 Main Street</div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">City</div>
+    <div class="info-value" th:text="${user.city}">Bengaluru</div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">State</div>
+    <div class="info-value" th:text="${user.state}">Karnataka</div>
+  </div>
+  <div class="info-row">
+    <div class="info-label">Pincode</div>
+    <div class="info-value" th:text="${user.pincode}">560001</div>
+  </div>
+
+  <!-- Action Buttons -->
+  <a href="resolve-it-through-mediation" class="btn btn-primary btn-action">
+    <i class="bi bi-pencil-square me-2"></i>Go to Home
+  </a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

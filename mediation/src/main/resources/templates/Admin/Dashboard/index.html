@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediation Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!-- Side Bar -->
+    <div th:insert="~{/Admin/includes/side-bar::sidebar}">
+        <!-- <div class="sidebar-overlay" id="sidebarOverlay"></div> -->
+    </div>
+    <!-- Sidebar Overlay for mobile -->
+    
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+
+        <!-- Top Nav Bar -->
+        <div th:insert="~{/Admin/includes/nav-bar::navbar}"></div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Total Users</div>
+                            <div class="stat-icon" style="background: var(--primary-color);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-value">12,456</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> +15.3% from last month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Active Sessions</div>
+                            <div class="stat-icon" style="background: var(--success-color);">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-value">8,923</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> +23.1% from last week
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Premium Users</div>
+                            <div class="stat-icon" style="background: var(--warning-color);">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-value">3,245</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> +8.7% from last month
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">Total Revenue</div>
+                            <div class="stat-icon" style="background: var(--info-color);">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-value">$45,670</div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> +12.5% from last month
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Recent Activities -->
+            <div class="recent-activities">
+                <h5 class="chart-title">Recent Activities</h5>
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: var(--success-color);">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h6>New User Registration</h6>
+                        <small>Sarah Johnson joined the platform - 2 minutes ago</small>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: var(--primary-color);">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h6>Mediation Session Completed</h6>
+                        <small>Mike Chen completed "Morning Mindfulness" - 15 minutes ago</small>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: var(--warning-color);">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h6>Premium Subscription</h6>
+                        <small>Emma Davis upgraded to premium - 1 hour ago</small>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: var(--info-color);">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h6>New Article Published</h6>
+                        <small>"Benefits of Evening Mediation" was published - 3 hours ago</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="/js/script1.js"></script>
+</body>
+
+</html>

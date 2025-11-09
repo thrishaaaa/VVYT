@@ -1,0 +1,21 @@
+<!-- Top Navbar -->
+<nav class="top-navbar" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+    th:fragment="navbar">
+    <div class="navbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h4 class="mb-0">Admin Control</h4>
+    </div>
+    <div class="navbar-right">
+        <div class="notification-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">5</span>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">JD</div>
+            <span>John Doe</span>
+        </div>
+    </div>
+</nav>

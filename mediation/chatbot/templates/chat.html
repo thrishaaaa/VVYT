@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Mediation Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            border: 1px solid #e9ecef;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .chat-input-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .chat-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .control-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #5a6268;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #6c757d;
+            margin: 40px 0;
+        }
+
+        .welcome-message h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .welcome-message p {
+            line-height: 1.6;
+        }
+
+        .analysis-highlight {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .analysis-highlight h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .analysis-highlight ul {
+            margin-left: 20px;
+        }
+
+        .analysis-highlight li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                height: 90vh;
+                border-radius: 15px;
+            }
+            
+            .chat-header {
+                border-radius: 15px 15px 0 0;
+                padding: 15px;
+            }
+            
+            .chat-header h1 {
+                font-size: 20px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+                padding: 12px 16px;
+            }
+            
+            .chat-input {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .send-button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 Legal Mediation Chatbot</h1>
+            <p>Get instant legal guidance for your mediation cases</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                <h3>Welcome to Legal Mediation Assistant!</h3>
+                <p>I'm here to help you analyze legal cases and determine the best path forward. Simply describe your legal situation in 2-3 sentences, and I'll provide you with:</p>
+                <ul style="text-align: left; display: inline-block; margin-top: 10px;">
+                    <li>📋 Required documents for your case</li>
+                    <li>⚖️ Whether mediation or court is appropriate</li>
+                    <li>🏷️ Case classification and recommendations</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Example:</strong> "My neighbor is building a fence that encroaches on my property. We've tried talking but can't agree on the boundary line."</p>
+            </div>
+        </div>
+        
+        <div class="typing-indicator" id="typingIndicator">
+            🤖 Analyzing your case...
+        </div>
+        
+        <div class="chat-input-container">
+            <form class="chat-input-form" id="chatForm">
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="messageInput" 
+                    placeholder="Describe your legal case here..."
+                    autocomplete="off"
+                >
+                <button type="submit" class="send-button" id="sendButton">
+                    Send
+                </button>
+            </form>
+            
+            <div class="chat-controls">
+                <button class="control-button" onclick="clearChat()">Clear Chat</button>
+                <button class="control-button" onclick="loadChatHistory()">Load History</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatForm = document.getElementById('chatForm');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Load chat history on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChatHistory();
+        });
+
+        // Handle form submission
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            sendMessage();
+        });
+
+        // Handle Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message to chat
+            addMessage(message, 'user');
+            messageInput.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Send message to API
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideTypingIndicator();
+                if (data.status === 'success') {
+                    addMessage(data.response.content, 'bot', data.response.analysis);
+                } else {
+                    addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                }
+            })
+            .catch(error => {
+                hideTypingIndicator();
+                console.error('Error:', error);
+                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            });
+        }
+
+        function addMessage(content, type, analysis = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = type === 'user' ? '👤' : '🤖';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            if (type === 'bot' && analysis) {
+                // Format bot message with analysis highlights
+                const formattedContent = formatBotMessage(content, analysis);
+                messageContent.innerHTML = formattedContent;
+            } else {
+                messageContent.textContent = content;
+            }
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function formatBotMessage(content, analysis) {
+            // Convert markdown-style formatting to HTML
+            let formatted = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            // Add analysis highlights if available
+            if (analysis) {
+                const highlightHtml = `
+                    <div class="analysis-highlight">
+                        <h4>📊 Case Analysis Summary</h4>
+                        <p><strong>Category:</strong> ${analysis.category}</p>
+                        <p><strong>Resolution Path:</strong> ${analysis.resolution_path}</p>
+                        <p><strong>Required Documents:</strong></p>
+                        <ul>
+                            ${analysis.documents_needed.map(doc => `<li>${doc}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                formatted += highlightHtml;
+            }
+            
+            return formatted;
+        }
+
+        function showTypingIndicator() {
+            typingIndicator.classList.add('show');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.classList.remove('show');
+        }
+
+        function clearChat() {
+            fetch('/api/chat/clear', { method: 'POST' })
+                .then(() => {
+                    chatMessages.innerHTML = `
+                        <div class="welcome-message">
+                            <h3>Welcome to Legal Mediation Assistant!</h3>
+                            <p>I'm here to help you analyze legal cases and determine the best path forward. Simply describe your legal situation in 2-3 sentences, and I'll provide you with:</p>
+                            <ul style="text-align: left; display: inline-block; margin-top: 10px;">
+                                <li>📋 Required documents for your case</li>
+                                <li>⚖️ Whether mediation or court is appropriate</li>
+                                <li>🏷️ Case classification and recommendations</li>
+                            </ul>
+                            <p style="margin-top: 15px;"><strong>Example:</strong> "My neighbor is building a fence that encroaches on my property. We've tried talking but can't agree on the boundary line."</p>
+                        </div>
+                    `;
+                })
+                .catch(error => console.error('Error clearing chat:', error));
+        }
+
+        function loadChatHistory() {
+            fetch('/api/chat/history')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success' && data.messages.length > 0) {
+                        // Clear current messages and reload history
+                        chatMessages.innerHTML = '';
+                        data.messages.forEach(msg => {
+                            addMessage(msg.content, msg.type, msg.analysis);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error loading chat history:', error));
+        }
+
+        // Auto-focus input on page load
+        messageInput.focus();
+    </script>
+</body>
+</html> 

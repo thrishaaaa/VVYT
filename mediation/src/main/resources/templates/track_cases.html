@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Track Cases - Resolve It</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      background: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+    .status-open {
+      color: #d6336c;
+      font-weight: 600;
+    }
+    .status-resolved {
+      color: #198754;
+      font-weight: 600;
+    }
+    .case-desc {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Track Your Cases</h1>
+  <p>Monitor and interact with your cases.</p>
+
+  <table class="table table-striped table-hover align-middle shadow-sm bg-white rounded">
+    <thead class="table-dark">
+    <tr>
+      <th>Case ID</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Created Date</th>
+      <th>Resolved Date</th>
+      <th>Mediator</th>
+      <th>Opposing Party</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="caseObj : ${cases}">
+      <td th:text="${caseObj.case_id}">101</td>
+      <td th:text="${caseObj.case_type}">Property Dispute</td>
+      <td class="case-desc" th:text="${caseObj.description}">Brief description ...</td>
+      <td>
+            <span th:text="${caseObj.status}"
+                  th:classappend="${caseObj.status.equals('Resolved')} ? 'status-resolved' : 'status-open'">Open</span>
+      </td>
+      <td th:text="${#temporals.format(caseObj.created_at, 'dd MMM yyyy')}">10 Oct 2025</td>
+      <td th:text="${caseObj.resolved_at != null ? #temporals.format(caseObj.resolved_at, 'dd MMM yyyy') : '-'}">-</td>
+      <td th:text="${caseObj.mediator != null ? caseObj.mediator.firstName + ' ' + caseObj.mediator.lastName : '-'}">Mediator Name</td>
+      <td th:text="${caseObj.party2 != null ? caseObj.party2.name : '-'}">Party 2 Name</td>
+      <td>
+        <a th:href="@{'/cases/' + ${caseObj.case_id}}" class="btn btn-sm btn-primary" title="View Details">
+          <i class="bi bi-eye"></i>
+        </a>
+        <a href="#" class="btn btn-sm btn-secondary" title="Chatbot (Demo)">
+          <i class="bi bi-chat-dots"></i>
+        </a>
+      </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(cases)}">
+      <td colspan="9" class="text-center text-muted">No cases found.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

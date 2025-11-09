@@ -1,0 +1,91 @@
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar" xmlns:th="https//ww.thymeleaf.org" th:fragment="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            Mediation
+        </div>
+        <div class="subtitle">Mediation Dashboard</div>
+    </div>
+
+    <div class="sidebar-menu">
+        <div class="menu-item">
+            <a href="#" class="menu-link active">
+                <i class="fas fa-chart-line menu-icon"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+        </div>
+
+        <div class="menu-item">
+            <a href="#" class="menu-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#usersDropdown">
+                <i class="fas fa-users menu-icon"></i>
+                <span class="menu-text">Users</span>
+                <i class="fas fa-chevron-down dropdown-arrow ms-auto"></i>
+            </a>
+            <div class="dropdown-menu-custom" id="usersDropdown">
+                <a href="/admin/user-details" class="dropdown-item-custom">All Users</a>
+                <a href="#" class="dropdown-item-custom">Active Users</a>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <a href="#" class="menu-link dropdown-toggle" data-bs-toggle="collapse"
+                data-bs-target="#meditationDropdown">
+                <i class="fas fa-spa menu-icon"></i>
+                <span class="menu-text">Mediation</span>
+                <i class="fas fa-chevron-down dropdown-arrow ms-auto"></i>
+            </a>
+            <div class="dropdown-menu-custom" id="meditationDropdown">
+                <a href="#" class="dropdown-item-custom">Schedule</a>
+                <a href="#" class="dropdown-item-custom">Mediators</a>
+            </div>
+        </div>
+
+        <div class="menu-item">
+            <a href="#" class="menu-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#contentDropdown">
+                <i class="fas fa-book menu-icon"></i>
+                <span class="menu-text">Case Tracking</span>
+                <i class="fas fa-chevron-down dropdown-arrow ms-auto"></i>
+            </a>
+            <div class="dropdown-menu-custom" id="contentDropdown">
+                <a href="#" class="dropdown-item-custom">Cases</a>
+            </div>
+        </div>
+
+<!--        <div class="menu-item">-->
+<!--            <a href="#" class="menu-link">-->
+<!--                <i class="fas fa-crown menu-icon"></i>-->
+<!--                <span class="menu-text">Subscriptions</span>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="menu-item">-->
+<!--            <a href="#" class="menu-link">-->
+<!--                <i class="fas fa-chart-pie menu-icon"></i>-->
+<!--                <span class="menu-text">Analytics</span>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="menu-item">-->
+<!--            <a href="#" class="menu-link">-->
+<!--                <i class="fas fa-bell menu-icon"></i>-->
+<!--                <span class="menu-text">Notifications</span>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="menu-item">-->
+<!--            <a href="#" class="menu-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#settingsDropdown">-->
+<!--                <i class="fas fa-cog menu-icon"></i>-->
+<!--                <span class="menu-text">Settings</span>-->
+<!--                <i class="fas fa-chevron-down dropdown-arrow ms-auto"></i>-->
+<!--            </a>-->
+<!--            <div class="dropdown-menu-custom" id="settingsDropdown">-->
+<!--                <a href="#" class="dropdown-item-custom">General Settings</a>-->
+<!--                <a href="#" class="dropdown-item-custom">App Configuration</a>-->
+<!--                <a href="#" class="dropdown-item-custom">Payment Settings</a>-->
+<!--                <a href="#" class="dropdown-item-custom">Email Templates</a>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
