@@ -11,6 +11,8 @@
             font-family: 'Segoe UI', sans-serif;
             background-color: #f5f7fa;
             color: #333;
+            margin: 0;
+            padding-top: 80px; /* ✅ increased to fully clear navbar overlap */
         }
 
         .section {
@@ -34,8 +36,8 @@
         }
 
         .section-img {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             object-fit: cover;
             border-radius: 50%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -72,32 +74,35 @@
             letter-spacing: 1px;
         }
 
+        /* ✅ Adjusted hero height and text background */
         .hero-section {
             width: 100vw;
-            height: 90vh;
+            height: 85vh;
             background: url('https://www.centurylawfirm.in/blog/wp-content/uploads/2022/10/mediation-solution.jpg') no-repeat center center;
             background-size: cover;
             position: relative;
             display: flex;
             align-items: flex-end;
             justify-content: center;
+            margin-bottom: 20px;
         }
 
         .hero-text {
             width: 100%;
             text-align: center;
             color: #222;
-            font-size: 1.5rem;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 1rem 0;
+            font-size: 1.6rem;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 1.2rem 0;
+            backdrop-filter: blur(4px);
         }
     </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+<!-- ✅ Navbar unchanged except fixed-top added -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top px-4">
     <a class="navbar-brand d-flex align-items-center" href="#">
         <img src="https://img.icons8.com/ios-filled/24/ffffff/scales.png" alt="logo" class="me-2" />
         <span class="logo-text">Resolve It</span>
@@ -139,7 +144,25 @@
     <div class="hero-text">Manage your legal cases with ease and efficiency</div>
 </div>
 
-<!-- Dashboard Sections -->
+<!-- ✅ Updated What is Mediation image (justice scale) -->
+<section class="section">
+    <div class="container flex-section reverse">
+        <div class="col-md-6">
+            <h2 class="section-title">What is Mediation?</h2>
+            <p class="section-description">
+                Learn about mediation, understand the legal framework, watch expert explanations, and explore real-world case studies to see how mediation resolves disputes effectively.
+            </p>
+            <a href="/mediation-info" class="btn btn-dark">Learn More About Mediation</a>
+        </div>
+        <div class="col-md-5">
+            <img src="https://cdn-icons-png.flaticon.com/512/3813/3813867.png
+"
+                 alt="What is Mediation" class="section-img">
+        </div>
+    </div>
+</section>
+
+<!-- ✅ All other sections remain unchanged -->
 <section class="section">
     <div class="container flex-section">
         <div class="col-md-6">
@@ -196,7 +219,6 @@
                 Get expert legal guidance on your disputes and understand your rights and legal options.
             </p>
             <a href="/legal-advisors" class="btn btn-dark">Get Advice</a>
-
         </div>
         <div class="col-md-5">
             <img src="https://t3.ftcdn.net/jpg/02/52/87/64/360_F_252876484_ABTKAWIH7lOAcDdWy6oz8VLm1HRiW7YX.jpg"
@@ -205,7 +227,6 @@
     </div>
 </section>
 
-<!-- ✅ Corrected Schedule section -->
 <section class="section">
     <div class="container flex-section">
         <div class="col-md-6">
@@ -213,7 +234,6 @@
             <p class="section-description">
                 Manage your upcoming mediation sessions. View your calendar, reschedule meetings, and set reminders.
             </p>
-            <!-- ✅ Fixed static path (no id) -->
             <a th:href="@{/mediators/schedule}" class="btn btn-dark">View Schedule</a>
         </div>
         <div class="col-md-5">
