@@ -610,6 +610,16 @@
       <button class="modal-close" onclick="closeMeetingModal()">&times;</button>
     </div>
     <form th:action="@{/mediator/create-meeting}" method="post">
+      <label class="form-label">Select Case</label>
+      <select name="caseId" class="form-glass" required>
+        <option value="">-- Choose a case --</option>
+        <option th:each="case : ${cases}"
+                th:value="${case.case_id}"
+                th:text="'#' + ${case.case_id} + ' - ' + ${case.case_type} + ' (' + ${case.status} + ')'">
+          Case
+        </option>
+      </select>
+
       <label class="form-label">Meeting Date</label>
       <input type="date" name="date" class="form-glass" required>
 

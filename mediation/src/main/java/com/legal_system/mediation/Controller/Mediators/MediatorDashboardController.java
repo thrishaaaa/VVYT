@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -44,7 +45,9 @@ public class MediatorDashboardController {
 
         // Get cases and meetings
         List<Cases> cases = dashboardService.getMediatorCases(mediatorId);
-        List<MeetingSchedule> meetings = dashboardService.getUpcomingMeetings(mediatorId);
+
+        // CHANGED: Get ALL meetings instead of just upcoming ones
+        List<MeetingSchedule> meetings = dashboardService.getAllMeetings(mediatorId);
 
         // Add to model
         model.addAttribute("mediator", mediator);
@@ -72,21 +75,31 @@ public class MediatorDashboardController {
         return "redirect:/mediator/dashboard";
     }
 
-    // Create new meeting
+    // Create new meeting - UPDATED with caseId parameter
     @PostMapping("/create-meeting")
     public String createMeeting(@RequestParam String date,
                                 @RequestParam String time,
                                 @RequestParam String description,
-                                HttpSession session) {
+                                @RequestParam Integer caseId,  // NEW: Added caseId parameter
+                                HttpSession session,
+                                RedirectAttributes redirectAttributes) {  // NEW: For flash messages
         Integer mediatorId = (Integer) session.getAttribute("loggedInMediatorId");
         if (mediatorId == null) {
             return "redirect:/mediator/sign-in";
         }
 
-        LocalDate meetingDate = LocalDate.parse(date);
-        LocalTime meetingTime = LocalTime.parse(time);
+        try {
+            LocalDate meetingDate = LocalDate.parse(date);
+            LocalTime meetingTime = LocalTime.parse(time);
 
-        dashboardService.createMeeting(mediatorId, meetingDate, meetingTime, description);
+            // CHANGED: Pass caseId to service method
+            dashboardService.createMeeting(mediatorId, caseId, meetingDate, meetingTime, description);
+
+            redirectAttributes.addFlashAttribute("success", "Meeting scheduled successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to schedule meeting: " + e.getMessage());
+        }
+
         return "redirect:/mediator/dashboard";
     }
 

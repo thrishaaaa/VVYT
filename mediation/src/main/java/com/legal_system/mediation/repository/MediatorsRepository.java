@@ -10,3 +10,4 @@ import java.util.Optional;
 public interface MediatorsRepository  extends JpaRepository<Mediators,Integer> {
     Optional<Mediators> findByEmail(String email);
 }
+

@@ -20,4 +20,7 @@ public interface CasesRepository extends JpaRepository<Cases, Integer> {
 
     // Count cases by status for a mediator
     Long countByMediatorIdAndStatus(Integer mediatorId, String status);
+
+    // NEW: Count cases where status is NOT the given value (for active cases count)
+    Long countByMediatorIdAndStatusNot(Integer mediatorId, String status);
 }
