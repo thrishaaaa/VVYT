@@ -1,25 +1,24 @@
 package com.legal_system.mediation.Controller;
 
-import org.springframework.ai.chat.model.ChatModel;
+import com.legal_system.mediation.Service.ChatbotService; // Import the new service
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class Chatbot {
     
-    private final ChatModel chatModel;
+    // Inject your new ChatbotService
+    @Autowired
+    private ChatbotService chatbotService;
 
-    Chatbot(ChatModel chatModel){
-        this.chatModel= chatModel;
-    }
-
+    // This endpoint is used by chatbotIndex.html
     @PostMapping("/processUserRequest")
     public String processUserRequest(HttpServletRequest request){
         String userQuery = request.getParameter("userQuery");
-        // userQuery = "\n "
-        String userQueryResponse = chatModel.call(userQuery);
-        return userQueryResponse;
+        
+        // Call the service to get the formatted HTML response
+        return chatbotService.analyzeCase(userQuery); 
     }
 }

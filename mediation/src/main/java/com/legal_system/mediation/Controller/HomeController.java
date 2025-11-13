@@ -17,6 +17,11 @@ public class HomeController {
         return "chatbotIndex";
     }
 
+    @GetMapping("/general-chat")
+    public String generalChat() {
+        return "GeneralChat"; 
+    }
+
 
     /*@GetMapping("/sign-up")
     public String register() {

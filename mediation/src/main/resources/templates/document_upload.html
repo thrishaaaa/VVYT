@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Upload - Case <span th:text="${case.case_id}"></span></title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+    :root {
+      --bg-900: #071428;
+      --bg-800: #0b2540;
+      --teal: #2bb8b8;
+      --accent: #f5c76b;
+      --glass-border: rgba(255,255,255,0.08);
+      --shadow: 0 8px 24px rgba(2,8,16,0.45);
+      --muted: #b6c2cc;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, var(--bg-900) 0%, var(--bg-800) 55%);
+      color: #e6eef6;
+      min-height: 100vh;
+      padding-top: 70px;
+    }
+
+    /* NAVBAR (Adapted for simplicity here, assume it's copied from index.html) */
+    .navbar-modern {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 20px rgba(2,8,16,0.5);
+    }
+    .navbar .nav-link { color: rgba(230,238,246,0.9); transition: color .15s; }
+    .brand-text { font-weight: 700; color: #fff; letter-spacing: .4px; }
+    
+    .content-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+
+    .info-card, .upload-card {
+        padding: 30px;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow);
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        color: #fff;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-subtitle {
+        color: var(--teal);
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+
+    .required-list li {
+        list-style-type: none;
+        padding: 8px 0;
+        border-bottom: 1px dashed rgba(255,255,255,0.08);
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+    }
+    
+    .required-list li i {
+        color: var(--accent);
+        margin-right: 10px;
+    }
+
+    /* Form Styles */
+    .form-control, .form-select {
+        background-color: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #fff;
+        padding: 10px 15px;
+    }
+    .form-control:focus, .form-select:focus {
+        background-color: rgba(255,255,255,0.15);
+        border-color: var(--teal);
+        box-shadow: 0 0 0 0.25rem rgba(43, 184, 184, 0.25);
+    }
+    .form-control::placeholder {
+        color: rgba(255,255,255,0.5);
+    }
+    
+    .btn-submit {
+        background: linear-gradient(90deg,var(--teal),#4fcbd6);
+        color: #021826;
+        border: 0;
+        font-weight: 700;
+        padding: 10px 16px;
+        border-radius: 8px;
+    }
+    .uploaded-doc {
+        background: rgba(255,255,255,0.08);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-modern fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/resolve-it-through-mediation">
+            <span class="brand-text">ResolveIt</span>
+        </a>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link" href="/resolve-it-through-mediation">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/track-cases">Track Cases</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="content-container">
+
+    <div class="info-card">
+        <h2 class="section-title">
+            <i class="bi bi-file-earmark-check-fill me-2" style="color: var(--teal);"></i> 
+            Document Filing: Case #<span th:text="${case.case_id}"></span>
+        </h2>
+        <p class="section-subtitle">Case Type: <span th:text="${case.case_type}"></span></p>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <p class="text-muted mb-1">Status: 
+                    <span class="badge bg-warning text-dark" th:text="${case.status}"></span>
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="text-muted mb-1">Filed: 
+                    <span th:text="${#temporals.format(case.created_at, 'dd MMM yyyy')}"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="upload-card">
+        <h3 class="text-white mb-4"><i class="bi bi-upload me-2"></i>Upload Required Documents</h3>
+        
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i><span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-x-octagon me-2"></i><span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="text-white mb-3">Checklist: (<span th:text="${requiredDocs.size()}"></span> items)</h5>
+                <ul class="required-list ps-0">
+                    <li th:each="docType : ${requiredDocs}">
+                        <i class="bi bi-circle me-2"></i>
+                        <span th:text="${docType}">Document Name</span>
+                    </li>
+                    </ul>
+                <a th:href="@{/resolve-it-through-mediation}" class="btn btn-sm btn-outline-light mt-3">
+                    Back to home page
+                </a>
+            </div>
+            
+            <div class="col-md-6">
+                <h5 class="text-white mb-3">Upload Form:</h5>
+                <form th:action="@{/upload-document}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="caseId" th:value="${case.case_id}" />
+
+                    <div class="mb-3">
+                        <label for="documentType" class="form-label text-muted">Document Type</label>
+                        <select id="documentType" name="documentType" class="form-select" required>
+                            <option value="">-- Select Required Document --</option>
+                            <option th:each="docType : ${requiredDocs}" th:value="${docType}" th:text="${docType}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="file" class="form-label text-muted">Select File (PDF, DOCX, JPG, etc.)</label>
+                        <input type="file" id="file" name="file" class="form-control" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-submit w-100">
+                        <i class="bi bi-cloud-arrow-up me-2"></i>Upload Document
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

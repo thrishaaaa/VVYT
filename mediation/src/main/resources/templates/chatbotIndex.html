@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
@@ -45,25 +46,29 @@
         .chat-input button {
             border-radius: 0;
         }
+        
+        .bot-response-container {
+            margin-top: 10px;
+            padding: 10px;
+            border-left: 3px solid #0d6efd;
+            background-color: #e9f5ff;
+            border-radius: 5px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Navbar: Resolve It -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <!-- Brand Logo and Name -->
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <img src="https://img.icons8.com/ios-filled/24/ffffff/scales.png" alt="logo" class="me-2" />
                 Resolve It
             </a>
 
-            <!-- Toggle Button for Mobile -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- Nav Links -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item">
@@ -81,7 +86,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/sign-up">Sign Up</a>
                     </li>
-                    <!-- User Dropdown -->
                     <li class="nav-item dropdown ms-3">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
                             role="button" data-bs-toggle="dropdown">
@@ -108,20 +112,91 @@
             <button class="btn btn-primary" onclick="sendQueryToChatbot()">Send</button>
         </div>
     </div>
+    
+    <div class="modal fade" id="caseFilingModal" tabindex="-1" aria-labelledby="caseFilingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="caseFilingModalLabel">File Your Case Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="caseFilingForm">
+                        <div class="mb-3">
+                            <label for="caseCategory" class="form-label">Predicted Category</label>
+                            <input type="text" class="form-control" id="caseCategory" name="caseCategory" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="caseDescription" class="form-label">Case Description (Edit if needed)</label>
+                            <textarea class="form-control" id="caseDescription" name="caseDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="otherPartyEmail" class="form-label">Other Party's Email ID</label>
+                            <input type="email" class="form-control" id="otherPartyEmail" name="otherPartyEmail" placeholder="Enter the email of the opposing party" required>
+                        </div>
+                        <input type="hidden" id="conversationLog" name="conversationLog">
+                        <button type="submit" class="btn btn-success w-100">Submit Case for Filing</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function sendQueryToChatbot() {
+        // Global variable to hold the entire chat history for logging
+        let fullConversationLog = "Bot: Hi! I'm here to help you file your case. What kind of dispute is it?\n";
+        
+        function getCategoryFromResponse(responseText) {
+            // The prompt says the response starts with "First: State the identified category."
+            const regex = /Category:\s*(.*?)\n/i;
+            const match = responseText.match(regex);
+            if (match && match[1]) {
+                return match[1].trim();
+            }
+            // Fallback for conversational style: look for key phrases
+            const categoryKeywords = ["Matrimonial disputes", "Family disputes", "Property disputes", "Business & commercial disputes", "Employment disputes", "Consumer disputes", "Neighbourhood/community disputes", "Banking & financial disputes", "Insurance disputes", "Medical negligence claims", "Other"];
+            for (const keyword of categoryKeywords) {
+                if (responseText.includes(keyword)) {
+                    return keyword;
+                }
+            }
+            return "Unclassified Dispute";
+        }
 
+        function triggerCaseFiling(category, description) {
+            // Pre-fill the modal form fields
+            $('#caseCategory').val(category);
+            $('#caseDescription').val(description);
+            $('#conversationLog').val(fullConversationLog);
+
+            // Show the modal
+            const caseFilingModal = new bootstrap.Modal(document.getElementById('caseFilingModal'));
+            caseFilingModal.show();
+        }
+
+        function sendQueryToChatbot() {
             const input = document.getElementById('userRequest');
             const userRequest = input.value.trim();
-
-            let chatBotResponse = "";
-
+            
             if (!userRequest) return;
+            
             const chat = document.getElementById('chatMessages');
+            
+            // 1. Display User Message
             const userMsg = document.createElement('div');
             userMsg.innerHTML = `<strong>You:</strong> ${userRequest}`;
             chat.appendChild(userMsg);
+            fullConversationLog += `You: ${userRequest}\n`;
+
+            // Clear input field immediately
+            input.value = '';
+            
+            // Disable button during processing
+            const sendBtn = document.querySelector('.chat-input button');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Analyzing...';
+
 
             $.ajax({
                 url: '/processUserRequest',
@@ -130,21 +205,104 @@
                     userQuery: userRequest
                 },
                 success: function (response) {
-                    chatBotResponse=response;
-                    console.log(chatBotResponse);
-                    console.log(response);
-                    const botMsg = document.createElement('div');
-                    botMsg.innerHTML = `<strong>Bot:</strong> ${chatBotResponse}`;
-                    chat.appendChild(botMsg);
+                    chatBotResponse = response;
+                    
+                    // 2. Display Bot Response
+                    const botMsgContainer = document.createElement('div');
+                    botMsgContainer.className = 'bot-response-container';
+                    botMsgContainer.innerHTML = `<strong>Bot:</strong> ${chatBotResponse}`;
+                    chat.appendChild(botMsgContainer);
+                    fullConversationLog += `Bot: ${chatBotResponse}\n`;
 
-                    input.value = '';
+                    // 3. Extract data for form
+                    const predictedCategory = getCategoryFromResponse(chatBotResponse);
+                    
+                    // 4. Add Case Filing Button
+                    const fileCaseBtnDiv = document.createElement('div');
+                    fileCaseBtnDiv.className = 'mt-3 mb-2';
+                    const fileCaseBtn = document.createElement('button');
+                    fileCaseBtn.className = 'btn btn-sm btn-success';
+                    fileCaseBtn.textContent = 'File as New Case';
+                    fileCaseBtn.onclick = () => triggerCaseFiling(predictedCategory, userRequest); // Pass original user query as description
+                    fileCaseBtnDiv.appendChild(fileCaseBtn);
+                    chat.appendChild(fileCaseBtnDiv);
+
+                    // Scroll to bottom
                     chat.scrollTop = chat.scrollHeight;
+
                 },
                 error: function (xhr, status, error) {
-                    return;
+                    const errorMsg = document.createElement('div');
+                    errorMsg.innerHTML = `<strong>Bot:</strong> Sorry, I encountered an error. Please try again.`;
+                    chat.appendChild(errorMsg);
+                },
+                complete: function() {
+                    // Re-enable button
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'Send';
+                    chat.scrollTop = chat.scrollHeight;
                 }
             });
         }
+        
+        // Handle case filing form submission (Inside chatbotIndex.html script tag)
+        $('#caseFilingForm').submit(function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                caseDescription: $('#caseDescription').val(),
+                caseCategory: $('#caseCategory').val(),
+                otherPartyEmail: $('#otherPartyEmail').val(),
+                conversationLog: $('#conversationLog').val()
+            };
+            
+            // Hide the modal
+            const caseFilingModal = bootstrap.Modal.getInstance(document.getElementById('caseFilingModal'));
+            if (caseFilingModal) {
+                caseFilingModal.hide();
+            }
+
+            // Display loading/info message
+            const chat = document.getElementById('chatMessages');
+            const filingMsg = document.createElement('div');
+            filingMsg.innerHTML = `<strong>System:</strong> Attempting to file your case...`;
+            chat.appendChild(filingMsg);
+            chat.scrollTop = chat.scrollHeight;
+
+
+            $.ajax({
+                url: '/fileCase',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+    const successMsg = document.createElement('div');
+    const caseId = response.caseId; // Get the new Case ID
+    
+    // Create the redirect link dynamically
+    const uploadLink = `/upload-documents/${caseId}`; 
+    
+    successMsg.innerHTML = `
+        <strong>System:</strong> Case filed successfully! Your Case ID is 
+        <strong>#${caseId}</strong>. You can now track your case.
+        <br>
+        <a href="${uploadLink}" class="btn btn-sm btn-primary mt-2">
+            Proceed to Document Upload
+        </a>
+    `;
+    
+    chat.appendChild(successMsg);
+    chat.scrollTop = chat.scrollHeight;
+    fullConversationLog = ""; 
+},
+                error: function(xhr) {
+                    const errorMsg = document.createElement('div');
+                    const response = xhr.responseJSON || {};
+                    errorMsg.innerHTML = `<strong>System:</strong> **ERROR filing case:** ${response.message || 'An unknown error occurred.'}`;
+                    chat.appendChild(errorMsg);
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            });
+        });
     </script>
 </body>
 

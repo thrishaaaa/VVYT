@@ -15,7 +15,7 @@ public class ChatbotLogs {
     @JoinColumn(name = "case_id")
     private Cases caseObj;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT") 
     private String conversation_text;
 
     private LocalDateTime timestamp;
