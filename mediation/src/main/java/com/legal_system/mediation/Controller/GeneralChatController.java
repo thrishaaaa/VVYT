@@ -1,5 +1,7 @@
 package com.legal_system.mediation.Controller;
 
+import com.legal_system.mediation.Service.TranslationService; // Import the new service
+import org.springframework.beans.factory.annotation.Autowired; // NEW
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,9 +24,13 @@ public class GeneralChatController {
 
     @Value("${groq.api.key}")
     private String groqApiKey;
-
+    
+    @Autowired // NEW: Inject the translation service
+    private TranslationService translationService; 
+    
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String MODEL_LANGUAGE = "en"; // Groq model is English-centric
 
     private final String systemPrompt = """
         You are a helpful and polite assistant for the "Resolve-IT" platform,
@@ -38,13 +44,24 @@ public class GeneralChatController {
     private final String groqApiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
     @PostMapping("/chat/ask")
-    public String askGeneralQuestion(@RequestParam String userQuery) {
+    // MODIFIED: Added userLanguageCode parameter
+    public String askGeneralQuestion(@RequestParam String userQuery, 
+                                     @RequestParam(defaultValue = "en") String userLanguageCode) {
+
+        // 1. --- INPUT TRANSLATION: Translate user query to English for Groq ---
+        String originalLang = userLanguageCode;
+        String processedQuery = userQuery;
+        
+        if (!MODEL_LANGUAGE.equalsIgnoreCase(originalLang)) {
+            // Translate the user's query to English for the Groq API
+            processedQuery = translationService.translateText(userQuery, MODEL_LANGUAGE, originalLang);
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(groqApiKey);
 
-        // Request Body (without JSON response format enforcement)
+        // Request Body uses the (potentially) translated query
         String requestBody = """
         {
           "model": "llama-3.1-8b-instant",
@@ -61,7 +78,7 @@ public class GeneralChatController {
         }
         """.formatted(
             systemPrompt.replace("\"", "\\\"").replace("\n", "\\n"),
-            userQuery.replace("\"", "\\\"").replace("\n", "\\n")
+            processedQuery.replace("\"", "\\\"").replace("\n", "\\n") // Use processedQuery
         );
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
@@ -71,13 +88,23 @@ public class GeneralChatController {
             JsonNode root = objectMapper.readTree(response);
             String plainTextContent = root.path("choices").path(0).path("message").path("content").asText();
 
-            // *** NEW: Format the plain text response before returning ***
-            return formatResponseAsHtml(plainTextContent);
+            // 2. --- OUTPUT TRANSLATION: Translate Groq response (English) back to user's language ---
+            String finalResponse = plainTextContent;
+            if (!MODEL_LANGUAGE.equalsIgnoreCase(originalLang)) {
+                 finalResponse = translationService.translateText(plainTextContent, originalLang, MODEL_LANGUAGE);
+            }
+
+            // Format the (potentially translated) response as HTML
+            return formatResponseAsHtml(finalResponse);
 
         } catch (Exception e) {
             e.printStackTrace();
-            // Return error as simple HTML paragraph
-            return "<p>Error: Could not connect to the Groq API. " + e.getMessage() + "</p>";
+            // Translate the error message if possible
+            String errorMsg = "Error: Could not connect to the Groq API. Please try again.";
+            if (!MODEL_LANGUAGE.equalsIgnoreCase(originalLang)) {
+                 errorMsg = translationService.translateText(errorMsg, originalLang, MODEL_LANGUAGE);
+            }
+            return "<p>" + errorMsg + "</p>";
         }
     }
 
@@ -129,11 +156,9 @@ public class GeneralChatController {
                 // Treat non-empty lines as paragraphs (or add <br> for single newlines if preferred)
                 if (!trimmedLine.isEmpty()) {
                      // Simple approach: wrap each non-list line in <p>
-                     // More complex logic could detect paragraph breaks (\n\n)
                      html.append("<p>").append(trimmedLine).append("</p>\n");
                 } else {
                      // Handle potentially empty lines between paragraphs if needed, e.g., add a <br>
-                     // html.append("<br>\n"); // Uncomment if you want breaks for empty lines
                 }
             }
         }

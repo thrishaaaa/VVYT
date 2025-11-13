@@ -13,13 +13,14 @@
         }
 
         .chatbox {
-            max-width: 600px;
-            margin: 60px auto;
+            max-width: 700px; /* MODIFIED: Increased max width */
+            margin: 40px auto; /* MODIFIED: Adjusted margin */
             background: white;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            height: 500px;
+            height: 70vh; /* MODIFIED: Increased height using viewport height */
+            min-height: 600px; /* MODIFIED: Added minimum height */
             display: flex;
             flex-direction: column;
         }
@@ -36,11 +37,14 @@
 
         .chat-input {
             display: flex;
+            align-items: center; /* Align items vertically */
         }
 
         .chat-input input {
             flex: 1;
             border-radius: 0;
+            /* Ensure input uses the remaining space */
+            margin-right: 5px; 
         }
 
         .chat-input button {
@@ -75,43 +79,38 @@
                         <a class="nav-link" href="/resolve-it-through-mediation">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/askChatBot">Chatbot</a>
+                        <a class="nav-link" href="/general-chat">General Chatbot</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Law Colleges</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign-in">Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign-up">Sign Up</a>
-                    </li>
-                    <li class="nav-item dropdown ms-3">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-                            role="button" data-bs-toggle="dropdown">
-                            <img src="https://img.icons8.com/ios-filled/24/user.png" alt="User" class="me-2" />
-                            User Name
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
-                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
     <div class="chatbox">
         <h4 class="text-center mb-3">AI Chatbot Assistant</h4>
         <div class="chat-messages" id="chatMessages">
             <div><strong>Bot:</strong> Hi! I'm here to help you file your case. What kind of dispute is it?</div>
         </div>
+        
         <div class="chat-input">
-            <input type="text" id="userRequest" class="form-control" placeholder="Type your message...">
+            <select id="targetLangSelector" class="form-select me-2" style="max-width: 120px;">
+                <option value="en" selected>English (EN)</option>
+                <option value="hi">Hindi (HI)</option>
+                <option value="kn">Kannada (KA)</option> 
+                <option value="te">Telugu (TE)</option>
+            </select>
+            
+            <input type="text" 
+                   id="userRequest" 
+                   class="form-control me-2" 
+                   placeholder="Type your message..."
+                   onkeydown="if(event.key === 'Enter') sendQueryToChatbot()"> 
+                   
             <button class="btn btn-primary" onclick="sendQueryToChatbot()">Send</button>
         </div>
-    </div>
+        </div>
     
     <div class="modal fade" id="caseFilingModal" tabindex="-1" aria-labelledby="caseFilingModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -157,6 +156,7 @@
             // Fallback for conversational style: look for key phrases
             const categoryKeywords = ["Matrimonial disputes", "Family disputes", "Property disputes", "Business & commercial disputes", "Employment disputes", "Consumer disputes", "Neighbourhood/community disputes", "Banking & financial disputes", "Insurance disputes", "Medical negligence claims", "Other"];
             for (const keyword of categoryKeywords) {
+                // IMPORTANT: Since the response might be translated, this keyword check needs updating if you expect non-English responses.
                 if (responseText.includes(keyword)) {
                     return keyword;
                 }
@@ -182,6 +182,9 @@
             if (!userRequest) return;
             
             const chat = document.getElementById('chatMessages');
+
+            // Retrieve the selected language code
+            const targetLanguageCode = document.getElementById('targetLangSelector').value; 
             
             // 1. Display User Message
             const userMsg = document.createElement('div');
@@ -202,7 +205,8 @@
                 url: '/processUserRequest',
                 type: 'POST',
                 data: {
-                    userQuery: userRequest
+                    userQuery: userRequest,
+                    targetLanguageCode: targetLanguageCode // Pass the language code
                 },
                 success: function (response) {
                     chatBotResponse = response;
@@ -215,6 +219,8 @@
                     fullConversationLog += `Bot: ${chatBotResponse}\n`;
 
                     // 3. Extract data for form
+                    // NOTE: This uses English keywords and may fail if the category name is translated. 
+                    // It should ideally extract data from a structured JSON response if available.
                     const predictedCategory = getCategoryFromResponse(chatBotResponse);
                     
                     // 4. Add Case Filing Button
@@ -275,25 +281,25 @@
                 type: 'POST',
                 data: formData,
                 success: function(response) {
-    const successMsg = document.createElement('div');
-    const caseId = response.caseId; // Get the new Case ID
-    
-    // Create the redirect link dynamically
-    const uploadLink = `/upload-documents/${caseId}`; 
-    
-    successMsg.innerHTML = `
-        <strong>System:</strong> Case filed successfully! Your Case ID is 
-        <strong>#${caseId}</strong>. You can now track your case.
-        <br>
-        <a href="${uploadLink}" class="btn btn-sm btn-primary mt-2">
-            Proceed to Document Upload
-        </a>
-    `;
-    
-    chat.appendChild(successMsg);
-    chat.scrollTop = chat.scrollHeight;
-    fullConversationLog = ""; 
-},
+                    const successMsg = document.createElement('div');
+                    const caseId = response.caseId; // Get the new Case ID
+                    
+                    // Create the redirect link dynamically
+                    const uploadLink = `/upload-documents/${caseId}`; 
+                    
+                    successMsg.innerHTML = `
+                        <strong>System:</strong> Case filed successfully! Your Case ID is 
+                        <strong>#${caseId}</strong>. You can now track your case.
+                        <br>
+                        <a href="${uploadLink}" class="btn btn-sm btn-primary mt-2">
+                            Proceed to Document Upload
+                        </a>
+                    `;
+                    
+                    chat.appendChild(successMsg);
+                    chat.scrollTop = chat.scrollHeight;
+                    fullConversationLog = ""; 
+                },
                 error: function(xhr) {
                     const errorMsg = document.createElement('div');
                     const response = xhr.responseJSON || {};

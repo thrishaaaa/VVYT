@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mediation-478113",
+  "private_key_id": "c2f750408c1b5824c99b5faa7a5b06e970c99a54",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDgNUXdogIHVa7e\nhgccrs6MWTlzxV01kJe7IcZXqzZ5yCqWcduvgofpFoAKgVgnAJsQdBvhYypvIHvm\n5EmlEtqI6E9h4eE2T1wvRH+IjaaZoAy1IBADMQTH/9sUdouc8Xd3HNtcTBFra/wP\nnl1InwC5KFxjUchfFfcCS2/UtKl8pdorSkYPP/PmFsSdguIYnn3qJJ1ZABPWtKQo\nZQJhJNMK1BJ276uhIq/5T0F2JAldXbSIGMezTKgiFSd0jJjDoxy6spZiZOr+xfOb\nzVKAnhEQIJg5ts2vJZRIJs7gsXENbIhukfBKz3uJ12o+GN5lrJR6juD8HvXcB/bZ\nG29xjQs1AgMBAAECggEANaa51bvXVW78/fW/jO8NsQsG0vvG/rLfhCGkZ0Uqr4Cl\nJEQRqFGJeU7vi9QAxrB/6rOGGmyS8m2pCIrXTp+Q2NMSb99P96GM8yimhgQzei6Q\n6+TEwCbCOKOyhpaJeSBVEJVArrjrMDPyaMBiHScjUqtkVEX1Nz+30H5Bv/oNVqyc\nurC1Zh7Bv34FaNqQyUtzqCgJXRz4cIGNMZdIhpn3Wlmkgzc8yyhIDA3urYSi7ho0\n2XcgTs9fHp3dUppfDtszfyhRLu7ZEdymBeg1i6VumVRq7XQ4n7OuL1aa34TXpGNZ\nOv/gw87mK9jmFWoampXxPIKCOCreH/HG3SO0BJnR4QKBgQDx1WQ1Oanruz7C32HJ\naOr4W0Az/oY5Xiv/pGtePwF5SBqJEWzkUUtNQKbuXRVsCXQK5FVIlRGlID2hW6nO\nm0cvMYWZAXpOPscIu16VsSALOV6eJPmyTJP+vDHMOczEzSJc9Y3gnE1vmaNudqx6\nj9ziPPE30EzUOZs5FPjE4/EZRQKBgQDtV5CTbbTJ0GWLht+JiTKH5AbKFim+LHbj\nGWFacvMnrHWANV4VDFMJOmJU++4ZH+LbOp8jgl3hfHetyhQ3RW+ZwW5YX0qttxyr\ncvwpIVttq88nfPTV6WIPE/rJG6m3Y3GGXeiAjOkh8F165X9GxogHaVwoRknlMKYK\nmJkxEt0xMQKBgQDm0o/gAZb/KmzAIei7DkpgHPDN7917ejgyvGPCxA6LDVhOhfRS\nhImERfZPQ0eEJA2/q6r/KVF7M6e/kLcmPa2XDQSAQxnS/zaIThb8d+Cm9e4qsg4m\nsdL8a/J4BJ8/JLDs22+8+FMs9w84C0ubfB8PTa3LYSVD12wh8rNzckGYpQKBgQCr\nn2weD3Bxls427Jpr+9ecSBlYvFoG+GQnp8yr+P83Kw/0W6LimXzZ6Wv9hAcSB+ql\nGGjG5pg4Wya3dq7ToNQoXKUMJiv8HbMPjyAkJcjVLy2mokbw/8g2mv33upco0zHe\nNb3QZxSVxBf0rEsyxJDMuzU2skzw/BK1Cs+LmtZzoQKBgEogwP7L1g/hs8J8O5p5\nGOyW1r9u4sKXMKbJGpAXgJZrCsi9C9Ep5m/kyKsX6os41hIygdUGokFVcqn4Hq9S\ncibaAl8WhEXfev7UY7wSalBAk6DLTyg36otF/xfTnxOcKc6Hz3rBIRkNDRoAoBQN\nyBxCq/Ao6dbHG4ZIbqjGPdme\n-----END PRIVATE KEY-----\n",
+  "client_email": "mediation@mediation-478113.iam.gserviceaccount.com",
+  "client_id": "109332903145076712356",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mediation%40mediation-478113.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

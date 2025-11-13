@@ -159,26 +159,9 @@
                         <a class="nav-link" href="/askChatBot">Chatbot</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/general-chat">General Chat</a> </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Law Colleges</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign-in">Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign-up">Sign Up</a>
-                    </li>
-                    <li class="nav-item dropdown ms-3">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
-                            role="button" data-bs-toggle="dropdown">
-                            <img src="https://img.icons8.com/ios-filled/24/user.png" alt="User" class="me-2" />
-                            User Name </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
-                        </ul>
-                    </li>
+                    
                 </ul>
             </div>
         </div>
@@ -194,9 +177,21 @@
                  </div>
             </div>
             <div class="chat-input">
-                <input type="text" id="userRequest" class="form-control" placeholder="Ask a question..." onkeydown="if(event.key === 'Enter') sendQuery();">
+                <select id="generalLangSelector" class="form-select me-2" style="max-width: 120px; border: none; padding-right: 0;">
+                    <option value="en" selected>English (EN)</option>
+                    <option value="hi">Hindi (HI)</option>
+                    <option value="kn">Kannada (KA)</option> 
+                    <option value="te">Telugu (TE)</option>
+                </select>
+                <input type="text" 
+                       id="userRequest" 
+                       class="form-control" 
+                       placeholder="Ask a question..." 
+                       onkeydown="if(event.key === 'Enter') sendQuery();">
+                       
                 <button class="btn btn-primary" onclick="sendQuery()">Send</button>
             </div>
+            
         </div>
     </div>
 
@@ -207,6 +202,8 @@
              if (!userRequest) return;
 
             const chatMessages = document.getElementById('chatMessages');
+
+            const userLanguageCode = document.getElementById('generalLangSelector').value;
 
             // Display User Message
             const userMsgDiv = document.createElement('div');
@@ -231,7 +228,9 @@
             $.ajax({
                 url: '/chat/ask', 
                 type: 'POST',
-                data: { userQuery: userRequest },
+                data: { userQuery: userRequest,
+                    userLanguageCode: userLanguageCode
+                 },
                 success: function (response) {
                     chatMessages.removeChild(typingIndicator); // Remove typing indicator
 
