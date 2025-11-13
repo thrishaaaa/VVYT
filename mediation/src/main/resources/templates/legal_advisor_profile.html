@@ -169,85 +169,92 @@
       <div class="info-card">
         <h5 class="section-title">Specializations</h5>
         <div class="text-center">
-          <div class="specialization-badge" th:each="spec : ${#strings.arraySplit(advisor.specializations.replaceAll('[\\[\\]\"]', ''), ',')}">
-          <i class="bi bi-check-circle me-1"></i>
-          <span th:text="${spec.trim()}"></span>
+          <div class="specialization-badge"
+               th:each="spec : ${#strings.arraySplit(
+             #strings.replace(
+                 #strings.replace(
+                     #strings.replace(
+                         #strings.replace(advisor.specializations, '[', ''),
+                     ']', ''),
+                 '&quot;', ''),
+             ' ', ''), ',')}">
+            <span th:text="${spec}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-md-8">
+      <!-- About Section -->
+      <div class="info-card">
+        <h5 class="section-title"><i class="bi bi-person-circle me-2"></i>About</h5>
+        <p th:text="${advisor.bio}" class="text-muted">
+          Advisor bio goes here...
+        </p>
+      </div>
+
+      <!-- Academic Information -->
+      <div class="info-card">
+        <h5 class="section-title"><i class="bi bi-mortarboard-fill me-2"></i>Academic Information</h5>
+
+        <div class="info-row">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="info-label">University</span>
+            </div>
+            <div class="col-md-8">
+              <span th:text="${advisor.university}">University Name</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="info-label">Year of Study</span>
+            </div>
+            <div class="col-md-8">
+              <span th:text="${advisor.yearOfStudy}">Year</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="row">
+            <div class="col-md-4">
+              <span class="info-label">Member Since</span>
+            </div>
+            <div class="col-md-8">
+              <span th:text="${#temporals.format(advisor.createdAt, 'MMMM yyyy')}">Month Year</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="info-card">
+        <h5 class="section-title"><i class="bi bi-graph-up me-2"></i>Statistics</h5>
+
+        <div class="row text-center">
+          <div class="col-md-6 mb-3">
+            <div class="p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
+              <h3 class="mb-0" th:text="${advisor.rating}">4.5</h3>
+              <small>Average Rating</small>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="p-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; color: white;">
+              <h3 class="mb-0" th:text="${advisor.totalReviews}">10</h3>
+              <small>Total Reviews</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Right Column -->
-  <div class="col-md-8">
-    <!-- About Section -->
-    <div class="info-card">
-      <h5 class="section-title"><i class="bi bi-person-circle me-2"></i>About</h5>
-      <p th:text="${advisor.bio}" class="text-muted">
-        Advisor bio goes here...
-      </p>
-    </div>
-
-    <!-- Academic Information -->
-    <div class="info-card">
-      <h5 class="section-title"><i class="bi bi-mortarboard-fill me-2"></i>Academic Information</h5>
-
-      <div class="info-row">
-        <div class="row">
-          <div class="col-md-4">
-            <span class="info-label">University</span>
-          </div>
-          <div class="col-md-8">
-            <span th:text="${advisor.university}">University Name</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="info-row">
-        <div class="row">
-          <div class="col-md-4">
-            <span class="info-label">Year of Study</span>
-          </div>
-          <div class="col-md-8">
-            <span th:text="${advisor.yearOfStudy}">Year</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="info-row">
-        <div class="row">
-          <div class="col-md-4">
-            <span class="info-label">Member Since</span>
-          </div>
-          <div class="col-md-8">
-            <span th:text="${#temporals.format(advisor.createdAt, 'MMMM yyyy')}">Month Year</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Statistics -->
-    <div class="info-card">
-      <h5 class="section-title"><i class="bi bi-graph-up me-2"></i>Statistics</h5>
-
-      <div class="row text-center">
-        <div class="col-md-6 mb-3">
-          <div class="p-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
-            <h3 class="mb-0" th:text="${advisor.rating}">4.5</h3>
-            <small>Average Rating</small>
-          </div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <div class="p-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; color: white;">
-            <h3 class="mb-0" th:text="${advisor.totalReviews}">10</h3>
-            <small>Total Reviews</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html>l

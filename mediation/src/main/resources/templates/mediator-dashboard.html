@@ -584,7 +584,10 @@
           </p>
         </div>
         <div class="meeting-actions" th:if="${meeting.status == 'Scheduled'}">
-          <form th:action="@{/mediator/cancel-meeting}" method="post" onsubmit="return confirm('Cancel this meeting?');">
+          <a href="https://meet.google.com/cso-zkgk-pfd" class="btn-glass btn-sm">
+            <i class="bi bi-camera-video"></i> Start Meeting
+          </a>
+          <form th:action="@{/mediator/cancel-meeting}" method="post" onsubmit="return confirm('Cancel this meeting?');" style="display: inline;">
             <input type="hidden" name="meetingId" th:value="${meeting.id}">
             <button type="submit" class="btn-danger btn-sm">
               <i class="bi bi-x-circle"></i> Cancel

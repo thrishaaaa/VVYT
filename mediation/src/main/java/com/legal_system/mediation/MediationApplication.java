@@ -1,5 +1,4 @@
 package com.legal_system.mediation;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

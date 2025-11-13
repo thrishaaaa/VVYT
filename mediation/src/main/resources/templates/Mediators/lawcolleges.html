@@ -3,12 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Law College</title>
+    <title>Bangalore Law Colleges - Partner Institutions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0b2540;       /* dark navy blue */
+            --secondary-color: #2bb8b8;     /* teal accent */
+            --accent-color: #f5c76b;        /* golden highlight */
+            --card-bg: rgba(255,255,255,0.05);
+            --text-light: #e6eef6;
+            --muted-text: #b6c2cc;
+            --border-glass: rgba(255,255,255,0.08);
+            --shadow: 0 8px 24px rgba(2,8,16,0.45);
+        }
 
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, var(--primary-color), #071428);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-light);
+            padding-top: 80px;
+        }
 
+        @media (max-width: 992px) {
+            body {
+                padding-top: 100px;
+            }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(11, 37, 64, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-glass);
+            box-shadow: var(--shadow);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color) !important;
+        }
+
+        .nav-link {
+            color: rgba(230,238,246,0.9) !important;
+            margin: 0 0.6rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-color) !important;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #0b2540, #132d50);
+            color: var(--accent-color);
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            border: none !important;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.4rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--muted-text);
+        }
+
+        /* College Card */
+        .college-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        .college-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .college-header {
+            background: linear-gradient(135deg, #0b2540, #1d3d60);
+            padding: 1.5rem;
+            color: var(--accent-color);
+            position: relative;
+        }
+
+        .college-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        .verified-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--secondary-color);
+            color: #021826;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .partnership-level {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(255,255,255,0.08);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .college-body {
+            padding: 1.5rem;
+        }
+
+        .college-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .college-location {
+            color: var(--muted-text);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .college-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            color: var(--muted-text);
+        }
+
+        .info-item i {
+            color: var(--secondary-color);
+        }
+
+        .program-badge {
+            display: inline-block;
+            background: rgba(43,184,184,0.1);
+            color: var(--secondary-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .college-footer {
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-view-details {
+            background: var(--secondary-color);
+            color: #021826;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-view-details:hover {
+            background: var(--accent-color);
+            color: #021826;
+            transform: translateX(5px);
+        }
+
+        .college-logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .college-logo img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+    </style>
 </head>
 <body>
 
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-modern fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/resolve-it-through-mediation">
+      <span class="brand-icon">
+        <img src="https://img.icons8.com/ios-filled/24/ffffff/scales.png" alt="logo" style="width:18px;height:18px"/>
+      </span>
+            <span class="brand-text">ResolveIt</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link" href="/resolve-it-through-mediation">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/askChatBot">Chatbot</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Law Colleges</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<section class="page-header text-center">
+    <h1><i class="fas fa-university"></i> Law Colleges </h1>
+    <p>Explore verified partner law colleges in Bangalore offering premier legal education</p>
+</section>
+
+<div class="container">
+    <div class="row">
+
+        <!-- National Law School of India University -->
+        <div class="col-lg-6">
+            <div class="college-card">
+                <div class="college-header">
+                    <div class="college-logo">
+                        <img src="https://www.nls.ac.in/wp-content/uploads/2020/09/NLSIU-logo.png" alt="NLS Logo">
+                    </div>
+                    <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                    <span class="partnership-level"><i class="fas fa-star"></i> Premier Partner</span>
+                </div>
+                <div class="college-body">
+                    <h3 class="college-name">National Law School of India University</h3>
+                    <div class="college-location"><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</div>
+                    <div class="college-info">
+                        <div class="info-item"><i class="fas fa-calendar-alt"></i> Established: 1987</div>
+                        <div class="info-item"><i class="fas fa-users"></i> Students: 1200+</div>
+                        <div class="info-item"><i class="fas fa-award"></i> NAAC A++</div>
+                    </div>
+                    <strong>Programs Offered:</strong><br>
+                    <span class="program-badge">B.A. LL.B (Hons) - 5 Years</span>
+                    <span class="program-badge">LL.M - 1 Year</span>
+                    <span class="program-badge">Ph.D in Law</span>
+                </div>
+                <div class="college-footer">
+                    <div><i class="fas fa-phone"></i> +91 80 2343 1748</div>
+                    <a href="https://www.nls.ac.in/" target="_blank" class="btn-view-details">
+                        View Details <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Christ Law College -->
+        <div class="col-lg-6">
+            <div class="college-card">
+                <div class="college-header">
+                    <div class="college-logo">
+                        <img src="https://christuniversity.in/images/logo.png" alt="Christ University Logo">
+                    </div>
+                    <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                    <span class="partnership-level"><i class="fas fa-handshake"></i> Registered Partner</span>
+                </div>
+                <div class="college-body">
+                    <h3 class="college-name">Christ Law College</h3>
+                    <div class="college-location"><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</div>
+                    <div class="college-info">
+                        <div class="info-item"><i class="fas fa-calendar-alt"></i> Established: 1969</div>
+                        <div class="info-item"><i class="fas fa-users"></i> Students: 2000+</div>
+                        <div class="info-item"><i class="fas fa-award"></i> NAAC A+</div>
+                    </div>
+                    <strong>Programs Offered:</strong><br>
+                    <span class="program-badge">B.A. LL.B - 5 Years</span>
+                    <span class="program-badge">B.Com. LL.B - 5 Years</span>
+                    <span class="program-badge">LL.M - 2 Years</span>
+                </div>
+                <div class="college-footer">
+                    <div><i class="fas fa-phone"></i> +91 80 4012 9100</div>
+                    <a href="https://christuniversity.in/departments/main-campus/school-of-law/school-of-law" target="_blank"
+                       class="btn-view-details">
+                        View Details <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- BMS College of Law -->
+        <div class="col-lg-6">
+            <div class="college-card">
+                <div class="college-header">
+                    <div class="college-logo">
+                        <img src="https://bmscl.ac.in/assets/images/BMS%20Law%20logo.png" alt="BMS College of Law">
+                    </div>
+                    <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                    <span class="partnership-level"><i class="fas fa-handshake"></i> Registered Partner</span>
+                </div>
+                <div class="college-body">
+                    <h3 class="college-name">BMS College of Law</h3>
+                    <div class="college-location"><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</div>
+                    <div class="college-info">
+                        <div class="info-item"><i class="fas fa-calendar-alt"></i> Established: 1963</div>
+                        <div class="info-item"><i class="fas fa-users"></i> Students: 1200+</div>
+                        <div class="info-item"><i class="fas fa-award"></i> BCI Approved</div>
+                    </div>
+                    <strong>Programs Offered:</strong><br>
+                    <span class="program-badge">B.A. LL.B</span>
+                    <span class="program-badge">LL.B (3 Years)</span>
+                </div>
+                <div class="college-footer">
+                    <div><i class="fas fa-phone"></i> +91 80 2667 2400</div>
+                    <a href="https://bmscl.ac.in/" target="_blank" class="btn-view-details">
+                        View Details <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PES School of Law -->
+        <div class="col-lg-6">
+            <div class="college-card">
+                <div class="college-header">
+                    <div class="college-logo">
+                        <img src="https://pes.edu/wp-content/uploads/2025/06/PESU-new-logo.png" alt="PES School of Law Logo">
+                    </div>
+                    <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                    <span class="partnership-level"><i class="fas fa-handshake"></i> Registered Partner</span>
+                </div>
+                <div class="college-body">
+                    <h3 class="college-name">PES University - School of Law</h3>
+                    <div class="college-location"><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</div>
+                    <div class="college-info">
+                        <div class="info-item"><i class="fas fa-calendar-alt"></i> Established: 2017</div>
+                        <div class="info-item"><i class="fas fa-users"></i> Students: 1000+</div>
+                        <div class="info-item"><i class="fas fa-award"></i> NAAC A+</div>
+                    </div>
+                    <strong>Programs Offered:</strong><br>
+                    <span class="program-badge">B.B.A. LL.B (Hons)</span>
+                    <span class="program-badge">B.A. LL.B (Hons)</span>
+                </div>
+                <div class="college-footer">
+                    <div><i class="fas fa-phone"></i> +91 80 2672 6622</div>
+                    <a href="https://law.pes.edu/" target="_blank" class="btn-view-details">
+                        View Details <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
