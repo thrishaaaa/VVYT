@@ -40,10 +40,42 @@ class EnhancedLegalMediationChatbot:
     # --- NEW: CRITICAL KEYWORD LIST ---
     # Any case containing these words will be forced to "Court"
     CRITICAL_KEYWORDS = [
-        'killed', 'murder', 'assault', 'violent', 'violence', 'fraudulent', 
-        'theft', 'criminal', 'weapon', 'police', 'stole', 'robbery', 'arson', 
-        'fraud', 'extortion', 'blackmail', 'kidnapping','kill','poison', 'kidnapped'
-    ]
+    # Already present
+    'killed', 'murder', 'assault', 'violent', 'violence', 'fraudulent',
+    'theft', 'criminal', 'weapon', 'police', 'stole', 'robbery', 'arson',
+    'fraud', 'extortion', 'blackmail', 'kidnapping', 'kill', 'poison',
+    'kidnapped', 'abused',
+
+    # New additions (important)
+    'rape', 'sexual assault', 'molestation', 'harassed', 'abuse', 'abusive',
+    'domestic violence', 'dowry', 'threat', 'threatened', 'threatening',
+    'illegal', 'scam', 'forgery', 'cheating', 'bribery', 'corruption',
+
+    # Injury / bodily harm
+    'stabbed', 'beaten', 'hit', 'attacked', 'gun', 'shot', 'shooting',
+    'strangled', 'slapped', 'injury', 'injured', 'hurt',
+
+    # Property and public crimes
+    'trespassing', 'vandalism', 'smuggling', 'trafficking', 'drug',
+    'drugs', 'narcotics', 'contraband',
+
+    # Financial crimes
+    'embezzlement', 'money laundering', 'scammed', 'counterfeit',
+    'identity theft', 'scamming',
+
+    # Cyber crimes
+    'hacked', 'hacking', 'cybercrime', 'data breach', 'phishing',
+
+    # Kid and vulnerable-related
+    'child abuse', 'child labour', 'human trafficking',
+
+    # Death / danger words
+    'dead', 'death', 'fatal', 'dangerous', 'hazardous',
+
+    # Court-related red flags
+    'FIR', 'complaint filed', 'charge sheet', 'arrest', 'arrested'
+]
+
     # ------------------------------------
 
     def __init__(self, model_path: str = 'focused_classifier.pkl'):

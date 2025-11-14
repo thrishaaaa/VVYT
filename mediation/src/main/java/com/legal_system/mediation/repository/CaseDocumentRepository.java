@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface CaseDocumentRepository extends JpaRepository<CaseDocument, Integer> {
     // Custom query to find all documents for a specific case
     // List<CaseDocument> findByCaseObj_CaseId(Integer caseId); 
+    
+    // All custom methods and imports related to document viewing have been removed.
 }
